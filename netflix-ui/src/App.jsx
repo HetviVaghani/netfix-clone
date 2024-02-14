@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Netflix from "./pages/Netflix";
+import Netflix from './pages/Netflix';
+import Player from './pages/Player';
 
 
 export default function App() {
@@ -11,6 +12,7 @@ export default function App() {
       <Routes>
        <Route exact path="/login" element ={<Login />}/>
        <Route exact path="/" element ={<Signup/>}/>
+       <Route exact path="/player" element ={<Player/>}/>
        <Route exact path="/netflix" element ={<Netflix/>}/>
       </Routes>
     </BrowserRouter> 

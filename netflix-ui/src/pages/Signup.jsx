@@ -1,73 +1,94 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
-import { Navigate } from "react-router-dom";
-
-export default function Signup() {
+function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
-  const handleSignIn = async () =>{
+  const handleSignIn = async () => {
     try {
-      const{email,password} = formValues;
-      await createUserWithEmailAndPassword(firebaseAuth,email,password);
-    } catch (err) {
-      console.log(err);
+      const { email, password } = formValues;
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    } catch (error) {
+      console.log(error);
     }
   };
 
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/netflix");
+  });
 
   return (
-    <Container showPassword={showPassword}>   
-       <BackgroundImage />
+    <Container showPassword={showPassword}>
+      <BackgroundImage />
       <div className="content">
         <Header login />
-        <div className="body flex column a-center j-center">
-          <div className="text flex column">
-            <h1>Unlimited movies, TV shows and more</h1>
-            <h4>Watch anywhere. Cancel anytime.</h4>
-            <h6>
-              Ready to Watch? Enter your email to create or restart membership
-            </h6>
-          </div>
-          <div className="form">
-            <input
-              type="email"
-              placeholder="Email Address"
-              name="email"
-              value={formValues.email}
-              onChange={(e) =>
-                setFormValues({
-                  ...formValues,
-                  [e.target.name]: e.target.value,
-                })
-              }
-            />
-            {showPassword && (
-              <input 
-                type="password" 
-                placeholder="password" 
-                name="password" 
-                value={formValues.password}
+        <div className="form-container flex column a-center j-center">
+          <div className="form flex column a-center j-center">
+            <div className="title">
+              <h3>Sign Up</h3>
+            </div>
+            <div className="container flex column">
+              <input
+                type="email"
+                placeholder="Email address"
                 onChange={(e) =>
                   setFormValues({
                     ...formValues,
                     [e.target.name]: e.target.value,
                   })
                 }
+                name="email"
+                value={formValues.email}
               />
-            )}
-            {!showPassword && (
-              <button onClick={() => setShowPassword(true)}>Get Started</button>
-            )}
+              <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+                name="password"
+                value={formValues.password}
+              />
+
+              <input
+                type="text"
+                id="username"
+                placeholder="UserName"
+                required
+              />
+              <input
+                type="text"
+                id="number"
+                placeholder="PhoneNumber"
+                maxLength={10}
+                required
+              />
+              <input type="date" id="birth-date" required />
+              <select name="gender" id="gender">
+                <option value="">-select Gender-</option>
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="other">other</option>
+              </select>
+
+              <button onClick={handleSignIn}>sign Up</button>
+            </div>
           </div>
-          <button onClick={handleSignIn}>Sign Up</button>
         </div>
       </div>
     </Container>
@@ -75,66 +96,44 @@ export default function Signup() {
 }
 
 const Container = styled.div`
-  position: relative;
-  .content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    grid-templete-rows: 15vh 85vh;
-    .body {
-      gap: 1rem;
-      .text {
-        gap: 1rem;
-        text-align: center;
-        font-size: 2rem;
-
-        h1 {
-          padding: 0 25rem;
-        }
-      }
-      .form {
-        display: grid;
-        grid-template-columns: ${({ showPassword }) =>
-          showPassword ? "1fr 1fr" : "2fr 1fr"};
-        width: 60%;
-
+position: relative;
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  grid-template-rows: 15vh 85vh;
+  .form-container {
+    gap: 2rem;
+    height: 85vh;
+    .form {
+      padding: 2rem;
+      background-color: #000000b0;
+      width: 25vw;
+      gap: 2rem;
+      color: white;
+      .container {
+        gap: 2rem;
         input {
-          color: black;
-          border: none;
-          padding: 1.5rem;
-          font-size: 1.2rem;
-          border: 1px solid black;
-          &:focus {
-            outline: none;
-          }
+          padding: 0.5rem 1rem;
+          width: 15rem;
         }
-
         button {
           padding: 0.5rem 1rem;
           background-color: #e50914;
           border: none;
           cursor: pointer;
           color: white;
+          border-radius: 0.2rem;
           font-weight: bolder;
           font-size: 1.05rem;
         }
       }
-
-      button {
-        padding: 0.5rem 1rem;
-        background-color: #e50914;
-        border: none;
-        cursor: pointer;
-        color: white;
-        border-radius: 0.2rem;
-        font-weight: bolder;
-        font-size: 1.05rem;
-      }
     }
   }
+}
 `;
 
+export default Signup;
