@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import BackgroundImage from "../assets/home.jpg";
+import BackgroundImage from "../assets/bg2.png";
 import MovieLogo from "../assets/homeTitle.webp";
 import { FaPlay } from "react-icons/fa";
 import { AiOutlineInfoCircle } from "react-icons/ai";
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { fetchMovies, getGenres } from "../stores";
 import Slider from "../components/Slider";
+import Card from "../components/Card"; // Import Card component
+import avg from "../assets/avangers.jpg";
 
 export default function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,13 +37,13 @@ export default function Netflix() {
       <Navbar isScrolled={isScrolled} />
       <div className="hero">
         <img
-          src={BackgroundImage}
+          src={avg}
           alt="background"
           className="background-image"
         />
         <div className="container">
           <div className="logo">
-            <img src={MovieLogo} alt="Movie Logo" />
+            {/* <img src={MovieLogo} alt="Movie Logo" /> */}
           </div>
           <div className="buttons flex">
             <button className="flex j-center a-center" onClick={() => navigate('/player')}>
@@ -52,6 +54,9 @@ export default function Netflix() {
             </button>
           </div>
         </div>
+      </div>
+      <div className="card-container">
+        <Card />
       </div>
       <Slider movies={movies}/>
     </Container>

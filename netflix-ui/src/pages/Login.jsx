@@ -63,8 +63,13 @@ function Login() {
             
           </div>
           {showPassword && <button onClick={handleLogin}>Log in </button>}
+          
+          <p>Design by student of PPSU Smit Hetvi KHushi <br /> you can checkout the link of University </p>
+          <a className="link" href="http://127.0.0.1:5500/project/indext.html" target="_blank" rel="noopener noreferrer">Visit My Local Website</a>
         </div>
+
       </div>
+      
     </Container>
   );
 }
@@ -105,6 +110,9 @@ const Container = styled.div`
           &:focus {
             outline: none;
           }
+          a{
+            font-color: white;
+          }
         }
         button {
           padding: 0.5rem 1rem;
@@ -114,6 +122,11 @@ const Container = styled.div`
           color: white;
           font-weight: bolder;
           font-size: 1.05rem;
+        }
+
+        {
+          text-decoration:none;
+          color: white;
         }
       }
       button {
